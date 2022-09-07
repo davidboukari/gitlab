@@ -265,3 +265,198 @@ git remote add origin git@gitlab.com:zzdanilou/my-static-website.git
 git push -u origin master
 ```
 
+## Create a project with build
+```
+* Install brew: https://dyclassroom.com/howto-mac/how-to-install-nodejs-and-npm-on-mac-using-homebrew
+If errors:  brew update-reset
+
+* Install nodejs : https://nodejs.org/en/
+node --versio
+v16.17.0
+
+npm --version
+8.15.0
+
+npm install -g gatsby-cli
+gatsby new static-website
+cd  static-website
+gatsby develop
+
+the web server is started http://localhost:8000
+
+Create project on Gitlab
+Do not initilialize readme.md
+
+git remote add origin git@gitlab.com:zzdanilou/my-static-website.git
+git push -u origin master
+
+# Build
+gatsby build
+
+cd publi
+ls public/
+217-97cbec2dfef1c16ad273.js
+217-97cbec2dfef1c16ad273.js.LICENSE.txt
+217-97cbec2dfef1c16ad273.js.ma
+231-35d180c52a3a65770f82.js
+231-35d180c52a3a65770f82.js.map
+404
+404.html
+app-aca952eae2657b3a4228.js
+app-aca952eae2657b3a4228.js.map
+chunk-map.json
+component---src-pages-404-js-809cc5ac4c6326673cb1.j
+component---src-pages-404-js-809cc5ac4c6326673cb1.js.map
+component---src-pages-index-js-82f5f0c7d7f62054c694.j
+component---src-pages-index-js-82f5f0c7d7f62054c694.js.map
+component---src-pages-page-2-js-a16e4bc91
+
+want to save directory public as artifacts
+
+Docker images
+sudo apt-get install -y nodejs
+npm install -g gatsby
+
+can easy use diff version of nodejs in the containers
+
+Build Web Site:
+  script:
+  - npm install
+  - npm install -g gatsby-cli
+  - gatsby build
+
+hub.docker.io nodejs official
+image: nod
+Use nodejs docker image
+
+Build Web Site:
+  image: node
+  script:
+  - npm install
+  - npm install -g gatsby-cli
+  - gatsby build
+ 
+* troubleshooting
+
+Job success
+artifacts:
+browse artifacts
+
+Build Web Site:
+  image: node
+  script:
+  - npm install
+  - npm install -g gatsby-cli
+  - gatsby build
+  artifacts:
+    untracked: false
+    expire_in: 30 days
+    paths:
+      - ./public
+
+* Adding a test stage
+Jobs return status:
+0 -> Succes
+1-255 -> Fail
+
+cd public
+# grep quiet mode -q
+grep -q "Gatsby" index.html
+echo $?
+
+Add grep Error
+look at the pipeline
+
+stages:
+  - build
+  - test
+ 
+Build Web Site:
+  stage: build
+  image: node
+  script:
+    - npm install
+    - npm install -g gatsby-cli
+    - gatsby build
+  artifacts:
+    untracked: false
+    expire_in: 30 days
+    paths:
+      - ./public
+ 
+Test the artifact:
+  stage: test
+  script:
+  - grep "Gatsby" ./public/index.html
+  - grep "XXXX" ./public/index.html
+  
+
+stages:
+  - build
+  - test
+ 
+Build Web Site:
+  stage: build
+  image: node
+  script:
+    - npm install
+    - npm install -g gatsby-cli
+    - gatsby build
+  artifacts:
+    untracked: false
+    expire_in: 30 days
+    paths:
+      - ./public
+ 
+Test the artifact:
+  stage: test
+  script:
+  - grep -q "Gatsby" ./public/index.html
+
+stages:
+  - build
+  - test
+ 
+Build Web Site:
+  stage: build
+  image: node
+  script:
+    - npm install
+    - npm install -g gatsby-cli
+    - gatsby build
+  artifacts:
+    untracked: false
+    expire_in: 30 days
+    paths:
+      - ./public
+ 
+Test the artifact:
+  stage: test
+  script:
+  - grep -q "Gatsby" ./public/index.html
+ 
+Test Web Site:
+  image: alpine
+  stage: test
+  script:
+    - npm install
+    - npm install -g gatsby-cli
+    - gatsby serve
+    - curl http://localhost:8000 | grep -q "Gatsby" ./public/index.html
+
+* Deployment using surge.sh
+# Use surge.sh for the deployment
+npm install --global surge
+
+Need to create an account in surge
+surge token
+
+Settings => CI/CD => Variables => Add Variable
+=> Key / Value
+
+Protect Variable disable or the var is only available for a branch
+Create
+SURGE_LOGIN  Disable protect var, Disable Mask var
+SURGE_TOKEN Disable Protect var, Enable Mask var (secret)
+
+```
