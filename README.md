@@ -461,6 +461,6 @@ Settings => CI/CD => Variables => Add Variable
 Protect Variable disable or the var is only available for a branch
 Create
 SURGE_LOGIN  Disable protect var, Disable Mask var
-SURGE_TOKEN Disable Protect var, Enable Mask var (secret)
+SURGE_TOKEN Disable Protect var, Enable Mask var (secret min >= 8 car)
 
 ```
