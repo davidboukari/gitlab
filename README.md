@@ -508,3 +508,59 @@ deploy to surge:
     - echo "surge --project ./public --domain instazone.surge.sh"
 
 ```
+
+## Sample
+```
+stages:
+  - build
+  - test
+  - deploy
+  - deployment test
+
+image: node
+
+Build Web Site:
+  stage: build
+  script:
+    - echo "CI_COMMIT_SHORT_SHA=$CI_COMMIT_SHORT_SHA"
+    - npm install
+    - npm install -g gatsby-cli
+    - gatsby build
+    - sed -i "s/%%VERSION%%/$CI_COMMIT_SHORT_SHA/" ./public/index.html
+  artifacts:
+    untracked: false
+    expire_in: 30 days
+    paths:
+      - ./public
+
+Test the artifact:
+  stage: test
+  image: alpine
+  script:
+  - grep -q "Gatsby" ./public/index.html
+
+Test Web Site:
+  stage: test
+  script:
+    - npm install
+    - npm install -g gatsby-cli
+    - gatsby serve &
+    - sleep 10
+    - echo "curl http://localhost:9000 | grep -q "Gatsby" ./public/index.html"
+
+Deploy to surge: 
+  stage: deploy
+  script:
+    - npm install --global surge
+    - echo "surge --project ./public --domain instazone.surge.sh"
+
+Test deploy:
+  stage: deployment test
+  script: 
+    - apk add --no-cache curl
+    - echo "curl http://instazone.surge.sh| grep 'Hi people'"
+    - echo "curl http://instazone.surge.sh| grep $CI_COMMIT_SHORT_SHA" 
+
+```
+
+
