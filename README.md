@@ -367,6 +367,7 @@ echo $?
 Add grep Error
 look at the pipeline
 
+---
 stages:
   - build
   - test
@@ -389,8 +390,9 @@ Test the artifact:
   script:
   - grep "Gatsby" ./public/index.html
   - grep "XXXX" ./public/index.html
-  
-
+ 
+# --
+---
 stages:
   - build
   - test
@@ -413,6 +415,7 @@ Test the artifact:
   script:
   - grep -q "Gatsby" ./public/index.html
 
+# Job in parallal 2 jobs in // in step test 
 stages:
   - build
   - test
@@ -442,7 +445,7 @@ Test Web Site:
     - npm install
     - npm install -g gatsby-cli
     - gatsby serve
-    - curl http://localhost:8000 | grep -q "Gatsby" ./public/index.html
+    - curl http://localhost:9000 | grep -q "Gatsby" ./public/index.html
 
 * Deployment using surge.sh
 # Use surge.sh for the deployment
@@ -451,6 +454,7 @@ npm install --global surge
 Need to create an account in surge
 surge token
 
+# Create Variables
 Settings => CI/CD => Variables => Add Variable
 => Key / Value
 
