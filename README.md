@@ -464,3 +464,47 @@ SURGE_LOGIN  Disable protect var, Disable Mask var
 SURGE_TOKEN Disable Protect var, Enable Mask var (secret min >= 8 car)
 
 ```
+
+# Sample
+```
+stages:
+  - build
+  - test
+  - deploy
+
+image: node
+
+Build Web Site:
+  stage: build
+  script:
+    - npm install
+    - npm install -g gatsby-cli
+    - gatsby build
+  artifacts:
+    untracked: false
+    expire_in: 30 days
+    paths:
+      - ./public
+
+Test the artifact:
+  stage: test
+  image: alpine
+  script:
+  - grep -q "Gatsby" ./public/index.html
+
+Test Web Site:
+  stage: test
+  script:
+    - npm install
+    - npm install -g gatsby-cli
+    - gatsby serve &
+    - sleep 10
+    - curl http://localhost:9000 | grep -q "Gatsby" ./public/index.html
+
+deploy to surge: 
+  stage: deploy
+  script:
+    - npm install --global surge
+    - echo "surge --project ./public --domain instazone.surge.sh"
+
+```
