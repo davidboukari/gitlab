@@ -236,3 +236,32 @@ The pass stages
 The arteface is undependant of the git project
 
 https://gitlab.com/zzdanilou/car-asembly-line/-/jobs/2989986300/artifacts/browse/build/
+
+## Create a project
+```
+https://www.gatsbyjs.com/docs/quick-start/#install-the-gatsby-cli
+
+* Install brew: https://dyclassroom.com/howto-mac/how-to-install-nodejs-and-npm-on-mac-using-homebrew
+If errors:  brew update-reset
+
+* Install nodejs : https://nodejs.org/en/
+node --version
+v16.17.0
+
+npm --version
+8.15.0
+
+npm install -g gatsby-cli
+gatsby new static-website
+cd  static-website
+gatsby develop
+
+the web server is started http://localhost:8000
+
+
+* Create project on Gitlab
+Do not initilialize readme.md
+git remote add origin git@gitlab.com:zzdanilou/my-static-website.git
+git push -u origin master
+```
+
