@@ -45,7 +45,7 @@ stages:
 build the car:
   # Stage step name
   stage: build
-  # Script to execute
+  # Script to execute it is a job
   script:
   - mkdir build
   - cd build
