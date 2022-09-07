@@ -2,6 +2,7 @@
 
 ## Sample
 * https://gitlab.com/zzdanilou/car-asembly-line
+* Create file .gitlab-ci.yml
 ```
 stages:
 - build
