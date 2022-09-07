@@ -1,5 +1,16 @@
 # gitlab
 
+## CI/CD
+* Basic CI/CD workflow with Gitlab CI
+* What is CI / CD?
+
+### Continious Integration
+* Code -> CI pipleine ( Build -> Code Quality -> Test -> Package)
+
+### Continious Delivery
+* Continious Delivery= previous stages you have create a package, auto install this package in an ENV decide if a specific package should go in PRD
+* CD pipeline ( Review / Test -> Stagging -> questions? -> Production )
+
 ## Sample
 * https://gitlab.com/zzdanilou/car-asembly-line
 * Create file .gitlab-ci.yml
