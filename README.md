@@ -24,6 +24,18 @@ Deployments => Environments
 
 <img width="1536" alt="image" src="https://user-images.githubusercontent.com/32338685/189140419-8a336589-5afb-422b-9c48-f4fc7fba0fd0.png">
 
+## Yaml syntax help doc
+* https://github.com/davidboukari/yamljson/blob/master/README.md
+* Yaml converter: https://codebeautify.org/yaml-to-json-xml-csv
+
+## Disabling a job
+* Just add . before the name ex .Deploy Production:
+
+## Anchor in yaml file ex:
+```
+use anchor &name value
+self: *name
+```
 
 ## Sample
 * https://gitlab.com/zzdanilou/car-asembly-line
