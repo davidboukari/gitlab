@@ -14,9 +14,146 @@
 ### Manage branch rights
 * Settings => Repository => Protected Branches => expand
 
+### Can see the differents environements
+
+<img width="1166" alt="image" src="https://user-images.githubusercontent.com/32338685/189135819-03238ec3-964e-41a5-ad6f-a1bda3b7063d.png">
+
+Deployments => Environments
+
 ## Sample
 * https://gitlab.com/zzdanilou/car-asembly-line
 * Create file .gitlab-ci.yml
+
+```
+stages:
+  - build
+  - test
+  - deploy review
+  - deploy staging
+  - staging test
+  - deploy production
+  - production test
+
+image: node
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+variables:
+  STAGING_DOMAIN: instazone-staging.surge.sh
+  PRODUCTION_DOMAIN: instazone.surge.sh
+
+Build Web Site:
+  stage: build
+  before_script:
+    - echo "Build Web Site"
+  script:
+    - echo "CI_COMMIT_SHORT_SHA=$CI_COMMIT_SHORT_SHA"
+    - npm install
+    - npm install -g gatsby-cli
+    - gatsby build
+    - sed -i "s/%%VERSION%%/$CI_COMMIT_SHORT_SHA/" ./public/index.html
+  artifacts:
+    untracked: false
+    expire_in: 30 days
+    paths:
+      - ./public
+
+Test the artifact:
+  stage: test
+  image: alpine
+  before_script:
+    - echo "Test the artifact"
+  script:
+  - grep -q "Gatsby" ./public/index.html
+
+Test Web Site:
+  stage: test
+  script:
+    - npm install
+    - npm install -g gatsby-cli
+    - gatsby serve &
+    - sleep 10
+    - echo "curl http://localhost:9000 | grep -q "Gatsby" ./public/index.html"
+
+Deploy review:
+  stage: deploy review
+  only:
+    - merge_requests
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    url: http://instazone-${CI_ENVIRONMENT_SLUG}.surge.sh
+    on_stop: Stop review
+  script:
+    - npm install --global surge
+    - echo "surge --project ./public --domain ${url}"
+
+Stop review:
+  stage: deploy review
+  variables:
+   GIT_STRATEGY: none
+  when: manual
+  only:
+    - merge requests
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    action: stop 
+  script:
+     - npm install --global surge
+     - echo "surge teardown instazone-${CI_ENVIRONMENT_SLUG}.surge.sh"  
+
+Deploy staging: 
+  stage: deploy staging
+  environment:
+    name: staging
+    url: $STAGING_DOMAIN
+  script:
+    - npm install --global surge
+    - echo "surge --project ./public --domain ${url}"
+
+Staging test:
+  stage: staging test
+  image: alpine
+  environment:
+    name: staging
+    url: $STAGING_DOMAIN   
+  script: 
+    - apk add --no-cache curl
+    - echo "curl http://${url}| grep 'Hi people'"
+    - echo "curl http://${url}| grep $CI_COMMIT_SHORT_SHA" 
+
+
+Deploy production: 
+  stage: deploy production
+  when: manual
+  allow_failure: false
+  only: 
+    - master
+  environment:
+    name: production
+    url: $PRODUCTION_DOMAIN
+  script:
+    - npm install --global surge
+    - echo "surge --project ./public --domain ${url}"
+
+
+Production test:
+  stage: production test
+  image: alpine
+  only: 
+    - master
+  environment:
+    name: production
+    url: $PRODUCTION_DOMAIN  
+  script: 
+    - apk add --no-cache curl
+    - echo "curl http://${PRODUCTION_DOMAIN}| grep 'Hi people'"
+    - echo "curl http://${PRODUCTION_DOMAIN}| grep $CI_COMMIT_SHORT_SHA"     
+
+```
+
+
 ```
 stages:
 - build
