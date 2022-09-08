@@ -11,6 +11,9 @@
 * Continious Delivery= previous stages you have create a package, auto install this package in an ENV decide if a specific package should go in PRD
 * CD pipeline ( Review / Test -> Stagging -> questions? -> Production )
 
+### Manage branch rights
+* Settings => Repository => Protected Branches => expand
+
 ## Sample
 * https://gitlab.com/zzdanilou/car-asembly-line
 * Create file .gitlab-ci.yml
@@ -564,3 +567,198 @@ Test deploy:
 ```
 
 
+## Manual for production env
+```
+stages:
+  - build
+  - test
+  - deploy staging
+  - staging test
+  - deploy production
+  - production test
+
+image: node
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+variables:
+  STAGING_DOMAIN: instazone-staging.surge.sh
+  PRODUCTION_DOMAIN: instazone.surge.sh
+
+Build Web Site:
+  stage: build
+
+  script:
+    - echo "CI_COMMIT_SHORT_SHA=$CI_COMMIT_SHORT_SHA"
+    - npm install
+    - npm install -g gatsby-cli
+    - gatsby build
+    - sed -i "s/%%VERSION%%/$CI_COMMIT_SHORT_SHA/" ./public/index.html
+  artifacts:
+    untracked: false
+    expire_in: 30 days
+    paths:
+      - ./public
+
+Test the artifact:
+  stage: test
+  image: alpine
+  script:
+  - grep -q "Gatsby" ./public/index.html
+
+Test Web Site:
+  stage: test
+  script:
+    - npm install
+    - npm install -g gatsby-cli
+    - gatsby serve &
+    - sleep 10
+    - echo "curl http://localhost:9000 | grep -q "Gatsby" ./public/index.html"
+
+Deploy staging: 
+  stage: deploy staging
+  environment:
+    name: staging
+    url: $STAGING_DOMAIN
+  script:
+    - npm install --global surge
+    - echo "surge --project ./public --domain ${url}"
+
+Staging test:
+  stage: staging test
+  image: alpine
+  environment:
+    name: staging
+    url: $STAGING_DOMAIN    
+  script: 
+    - apk add --no-cache curl
+    - echo "curl http://${url}| grep 'Hi people'"
+    - echo "curl http://${url}| grep $CI_COMMIT_SHORT_SHA" 
+
+
+Deploy production: 
+  stage: deploy production
+  when: manual
+  allow_failure: false
+  environment:
+    name: production
+    url: $PRODUCTION_DOMAIN
+  script:
+    - npm install --global surge
+    - echo "surge --project ./public --domain ${url}"
+
+
+Production test:
+  stage: production test
+  image: alpine
+  environment:
+    name: production
+    url: $PRODUCTION_DOMAIN  
+  script: 
+    - apk add --no-cache curl
+    - echo "curl http://${PRODUCTION_DOMAIN}| grep 'Hi people'"
+    - echo "curl http://${PRODUCTION_DOMAIN}| grep $CI_COMMIT_SHORT_SHA"     
+
+```
+
+## Only for some specifiques branches
+```
+stages:
+  - build
+  - test
+  - deploy staging
+  - staging test
+  - deploy production
+  - production test
+
+image: node
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+variables:
+  STAGING_DOMAIN: instazone-staging.surge.sh
+  PRODUCTION_DOMAIN: instazone.surge.sh
+
+Build Web Site:
+  stage: build
+
+  script:
+    - echo "CI_COMMIT_SHORT_SHA=$CI_COMMIT_SHORT_SHA"
+    - npm install
+    - npm install -g gatsby-cli
+    - gatsby build
+    - sed -i "s/%%VERSION%%/$CI_COMMIT_SHORT_SHA/" ./public/index.html
+  artifacts:
+    untracked: false
+    expire_in: 30 days
+    paths:
+      - ./public
+
+Test the artifact:
+  stage: test
+  image: alpine
+  script:
+  - grep -q "Gatsby" ./public/index.html
+
+Test Web Site:
+  stage: test
+  script:
+    - npm install
+    - npm install -g gatsby-cli
+    - gatsby serve &
+    - sleep 10
+    - echo "curl http://localhost:9000 | grep -q "Gatsby" ./public/index.html"
+
+Deploy staging: 
+  stage: deploy staging
+  environment:
+    name: staging
+    url: $STAGING_DOMAIN
+  script:
+    - npm install --global surge
+    - echo "surge --project ./public --domain ${url}"
+
+Staging test:
+  stage: staging test
+  image: alpine
+  environment:
+    name: staging
+    url: $STAGING_DOMAIN    
+  script: 
+    - apk add --no-cache curl
+    - echo "curl http://${url}| grep 'Hi people'"
+    - echo "curl http://${url}| grep $CI_COMMIT_SHORT_SHA" 
+
+
+Deploy production: 
+  stage: deploy production
+  when: manual
+  allow_failure: false
+  only: 
+    - master
+  environment:
+    name: production
+    url: $PRODUCTION_DOMAIN
+  script:
+    - npm install --global surge
+    - echo "surge --project ./public --domain ${url}"
+
+
+Production test:
+  stage: production test
+  image: alpine
+  only: 
+    - master
+  environment:
+    name: production
+    url: $PRODUCTION_DOMAIN  
+  script: 
+    - apk add --no-cache curl
+    - echo "curl http://${PRODUCTION_DOMAIN}| grep 'Hi people'"
+    - echo "curl http://${PRODUCTION_DOMAIN}| grep $CI_COMMIT_SHORT_SHA"     
+
+```
