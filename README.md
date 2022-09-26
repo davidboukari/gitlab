@@ -19,6 +19,9 @@ echo "192.168.1.200 gitlab.example.com" >> /etc/hosts
 
 # Install gitlab
 apt-get install gitlab-ee
+
+# Configure
+gitlab-ctl reconfigure
 ```
 
 
