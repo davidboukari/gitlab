@@ -1,5 +1,21 @@
 # gitlab
 
+# Install on a VM
+```
+# 1. Install and configure the necessary dependencies
+sudo apt-get update
+sudo apt-get install -y curl openssh-server ca-certificates tzdata perl
+
+sudo apt-get install -y postfix
+
+# 2. Add the GitLab package repository and install the package 
+curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh | sudo bash
+
+# Get intial credential
+cat /etc/gitlab/initial_root_password
+```
+
+
 ## CI/CD
 * Basic CI/CD workflow with Gitlab CI
 * What is CI / CD?
