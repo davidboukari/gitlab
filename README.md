@@ -13,6 +13,12 @@ curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.de
 
 # Get intial credential
 cat /etc/gitlab/initial_root_password
+
+# set demo dns
+echo "192.168.1.200 gitlab.example.com" >> /etc/hosts
+
+# Install gitlab
+apt-get install gitlab-ee
 ```
 
 
