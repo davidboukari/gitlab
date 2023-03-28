@@ -11,8 +11,11 @@ sudo apt-get install -y postfix
 # 2. Add the GitLab package repository and install the package 
 curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh | sudo bash
 
-# Get intial credential
+# Get intial credential  
 cat /etc/gitlab/initial_root_password
+
+# Connect as root
+root / $(cat /etc/gitlab/initial_root_password)
 
 # set demo dns
 echo "192.168.1.200 gitlab.example.com" >> /etc/hosts
