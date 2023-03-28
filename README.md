@@ -27,6 +27,15 @@ apt-get install gitlab-ee
 gitlab-ctl reconfigure
 ```
 
+## Register a runner
+```
+# Generate a registration runner token here: 
+* http://gitlab.example.com/admin/runners
+
+<img width="1604" alt="image" src="https://user-images.githubusercontent.com/32338685/228361286-4d82d080-ef13-4179-9144-23827b174851.png">
+
+
+```
 
 ## CI/CD
 * Basic CI/CD workflow with Gitlab CI
