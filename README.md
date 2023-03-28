@@ -39,7 +39,8 @@ Download the package here: https://docs.gitlab.com/runner/install/linux-manually
 dpkg -i 
 
 
-gitlab-runner register
+gitlab-runner register --locked=false
+
 Runtime platform                                    arch=amd64 os=linux pid=5414 revision=456e3482 version=15.10.0
 WARNING: Running in user-mode.                     
 WARNING: The user-mode requires you to manually start builds processing: 
