@@ -34,7 +34,43 @@ gitlab-ctl reconfigure
 ```
 <img width="1604" alt="image" src="https://user-images.githubusercontent.com/32338685/228361286-4d82d080-ef13-4179-9144-23827b174851.png">
 
+```
+Download the package here: https://docs.gitlab.com/runner/install/linux-manually.html
+dpkg -i 
 
+
+gitlab-runner register
+Runtime platform                                    arch=amd64 os=linux pid=5414 revision=456e3482 version=15.10.0
+WARNING: Running in user-mode.                     
+WARNING: The user-mode requires you to manually start builds processing: 
+WARNING: $ gitlab-runner run                       
+WARNING: Use sudo for system-mode:                 
+WARNING: $ sudo gitlab-runner...                   
+                                                   
+WARNING: There might be a problem with your config
+jsonschema: '/runners' does not validate with https://gitlab.com/gitlab-org/gitlab-runner/common/config#/$ref/properties/runners/type: expected array, but got null 
+Enter the GitLab instance URL (for example, https://gitlab.com/):
+http://gitlab.example.com/
+Enter the registration token:
+xxxxxxxx
+Enter a description for the runner:
+[ubuntu2004]: gitlab.example.com runner1
+Enter tags for the runner (comma-separated):
+runner1
+Enter optional maintenance note for the runner:
+in maintenance
+WARNING: Support for registration tokens and runner parameters in the 'register' command has been deprecated in GitLab Runner 15.6 and will be replaced with support for authentication tokens. For more information, see https://gitlab.com/gitlab-org/gitlab/-/issues/380872 
+Registering runner... succeeded                     runner=kPvs6hax
+Enter an executor: ssh, virtualbox, docker+machine, docker-ssh+machine, docker-ssh, parallels, shell, instance, kubernetes, custom, docker:
+docker
+Enter the default Docker image (for example, ruby:2.7):
+ruby:2.7
+Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!
+ 
+Configuration (with the authentication token) was saved in "/home/ubuntu/.gitlab-runner/config.toml" 
+
+
+```
 
 
 ## CI/CD
