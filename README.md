@@ -71,6 +71,8 @@ Runner registered successfully. Feel free to start it, but if it's running alrea
 Configuration (with the authentication token) was saved in "/home/ubuntu/.gitlab-runner/config.toml" 
 
 
+
+gitlab-runner verify
 ```
 
 
