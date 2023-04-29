@@ -74,7 +74,8 @@ Configuration (with the authentication token) was saved in "/home/ubuntu/.gitlab
 
 gitlab-runner verify
 ```
-
+## Runner Config File
+* /etc/gitlab-runner/config.toml
 
 ## CI/CD
 * Basic CI/CD workflow with Gitlab CI
