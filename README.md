@@ -27,6 +27,21 @@ apt-get install gitlab-ee
 gitlab-ctl reconfigure
 ```
 
+## Configure or reconfigure the gitlab hostname
+```
+Change the default address manually for GitLab
+
+To configure an external URL for GitLab, modify the external_url parameter in the /etc/gitlab/gitlab.rb file:
+
+external_url "https://gitlab.example.com"
+
+    Run the gitlab-ctl script to apply the changes as follows:
+
+    sudo gitlab-ctl reconfigure
+
+
+```
+
 ## Register a runner
 ```
 # Generate a registration runner token here: 
