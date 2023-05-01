@@ -94,6 +94,7 @@ gitlab-runner verify
 
 
 ## Dump variables
+* curl --header "PRIVATE-TOKEN: xxxxxxxxx" "http://192.168.1.200/api/v4/projects/7/variables"  > .exportvars.sh
 
 * Get project_id in HTML
 <img width="780" alt="image" src="https://user-images.githubusercontent.com/32338685/235525229-82676c7f-871d-457d-998d-e326c7d16b3a.png">
