@@ -92,6 +92,25 @@ gitlab-runner verify
 ## Runner Config File
 * /etc/gitlab-runner/config.toml
 
+
+## Dump variables
+
+* Get project_id in HTML
+<img width="780" alt="image" src="https://user-images.githubusercontent.com/32338685/235525229-82676c7f-871d-457d-998d-e326c7d16b3a.png">
+
+* https://stackoverflow.com/questions/56780817/how-to-backup-export-gitlab-ci-environment-variables
+```
+# Instance-level CI/CD variables
+curl --header "PRIVATE-TOKEN: your-priv-token" "https://gitlab.example.com/api/v4/admin/ci/variables" | jq -r '.[] | .key, .value, ""'
+
+# Group-level Variables
+curl --header "PRIVATE-TOKEN: your-priv-token" "https://gitlab.example.com/api/v4/groups/1/variables" | jq -r '.[] | .key, .value, ""'
+
+# Project-level Variables
+curl --header "PRIVATE-TOKEN: your-priv-token" "https://gitlab.example.com/api/v4/projects/1/variables" | jq -r '.[] | .key, .value, ""'
+```
+
+
 ## CI/CD
 * Basic CI/CD workflow with Gitlab CI
 * What is CI / CD?
