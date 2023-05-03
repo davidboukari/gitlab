@@ -1,5 +1,10 @@
 # gitlab
 
+## Cleaning, no left space
+```
+rm /var/log/gitlab/puma/puma_stderr.log
+```
+
 # Install on a VM
 ```
 # 1. Install and configure the necessary dependencies
