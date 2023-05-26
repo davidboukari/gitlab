@@ -1,5 +1,15 @@
 # gitlab
 
+
+## Generate token for project only or ssh key for project only
+<img width="1067" alt="image" src="https://github.com/davidboukari/gitlab/assets/32338685/03519241-9c25-422d-8440-466d6a60fadf">
+
+* Generate Read Only Token for the project
+<img width="1517" alt="image" src="https://github.com/davidboukari/gitlab/assets/32338685/f58f1daf-d61f-46a1-9d03-781426cf2b26">
+
+* Add ssh public key for for Read/Write Access on the project
+<img width="1415" alt="image" src="https://github.com/davidboukari/gitlab/assets/32338685/2f9b3253-9ae1-45bc-af0d-b33eadbfc2d0">
+
 ## Cleaning, no left space
 ```
 rm /var/log/gitlab/puma/puma_stderr.log
