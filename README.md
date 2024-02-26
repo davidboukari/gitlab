@@ -3,6 +3,40 @@
 ## Config file
 * /etc/gitlab/gitlab.rb
 
+
+## https
+```
+vim /var/opt/gitlab/nginx/conf/gitlab-http.conf
+
+  error_page 404 /404.html;
+  error_page 500 /500.html;
+  error_page 502 /502.html;
+  location ~ ^/(404|500|502)(-custom)?\.html$ {
+    root /opt/gitlab/embedded/service/gitlab-rails/public;
+    internal;
+  }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /opt/cert-mygitlab.com/mygitlab.com.crt; # managed by Certbot
+    ssl_certificate_key /opt/cert-mygitlab.com/mygitlab.com.key; # managed by Certbot
+    #include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    #ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+} ## end HTTPS server
+
+```
+and also
+```
+vim /etc/gitlab/gitlab.rb
+
+...
+##! if ssl_verify_client on, verification depth in the client certificates chain
+# nginx['ssl_verify_depth'] = "1"
+nginx['ssl_verify_depth'] = "0"
+
+```
+
+
 ## Generate token for project only or ssh key for project only
 <img width="1067" alt="image" src="https://github.com/davidboukari/gitlab/assets/32338685/03519241-9c25-422d-8440-466d6a60fadf">
 
