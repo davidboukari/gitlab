@@ -35,7 +35,17 @@ vim /etc/gitlab/gitlab.rb
 nginx['ssl_verify_depth'] = "0"
 
 ```
+and
+```
 
+systemctl restart gitlab-runsvdir.service 
+
+or
+
+sudo gitlab-ctl reconfigure
+
+
+```
 
 ## Generate token for project only or ssh key for project only
 <img width="1067" alt="image" src="https://github.com/davidboukari/gitlab/assets/32338685/03519241-9c25-422d-8440-466d6a60fadf">
