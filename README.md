@@ -4,6 +4,19 @@
 * /etc/gitlab/gitlab.rb
 
 
+## error
+* Domain name does not end with a valid public suffix (TLD)
+```
+
+You can disable LetsEncrypt TLS certificate generation by changing the
+
+# letsencrypt['enable'] = true
+
+to
+
+letsencrypt['enable'] = false
+```
+
 ## https
 ```
 vim /var/opt/gitlab/nginx/conf/gitlab-http.conf
